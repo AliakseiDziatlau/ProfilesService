@@ -19,6 +19,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddTransient<IDbConnection>(sp => new SqlConnection(connectionString));
 
 //DI container configuration
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IReceptionistService, ReceptionistService>();
 builder.Services.AddScoped<IPatientService, PatientService>();

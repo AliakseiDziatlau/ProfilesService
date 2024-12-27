@@ -1,3 +1,4 @@
+using AutoMapper;
 using ProfilesService.Application.Interfaces;
 using ProfilesService.BusinessLogic.Domain.Entities;
 using ProfilesService.DataAccess.Interfaces;
@@ -8,10 +9,12 @@ namespace ProfilesService.Application.Services;
 public class PatientService : IPatientService
 {
     private readonly IPatientRepository _repository;
+    private readonly IMapper _mapper;
 
-    public PatientService(IPatientRepository repository)
+    public PatientService(IPatientRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
     
     public async Task<PatientResponseDto> GetPatientByIdAsync(int id)
@@ -19,46 +22,18 @@ public class PatientService : IPatientService
         var patient = await _repository.GetByIdAsync(id);
         if (patient == null)
             throw new KeyNotFoundException($"Patient with ID {id} not found.");
-
-        return new PatientResponseDto
-        {
-            Id = patient.Id,
-            FirstName = patient.FirstName,
-            LastName = patient.LastName,
-            MiddleName = patient.MiddleName,
-            DateOfBirth = patient.DateOfBirth,
-            IsLinkedToAccount = patient.IsLinkedToAccount,
-            AccountId = patient.AccountId
-        };
+        return _mapper.Map<PatientResponseDto>(patient);
     }
 
     public async Task<IEnumerable<PatientResponseDto>> GetAllPatientsAsync()
     {
         var patients = await _repository.GetAllAsync();
-        return patients.Select(p => new PatientResponseDto
-        {
-            Id = p.Id,
-            FirstName = p.FirstName,
-            LastName = p.LastName,
-            MiddleName = p.MiddleName,
-            DateOfBirth = p.DateOfBirth,
-            IsLinkedToAccount = p.IsLinkedToAccount,
-            AccountId = p.AccountId
-        });
+        return _mapper.Map<IEnumerable<PatientResponseDto>>(patients);
     }
 
     public async Task CreatePatientAsync(CreatePatientDto dto)
     {
-        var patient = new Patient
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            MiddleName = dto.MiddleName,
-            DateOfBirth = dto.DateOfBirth,
-            IsLinkedToAccount = dto.IsLinkedToAccount,
-            AccountId = dto.AccountId
-        };
-
+        var patient = _mapper.Map<Patient>(dto);
         await _repository.CreateAsync(patient);
     }
 
@@ -67,14 +42,8 @@ public class PatientService : IPatientService
         var patient = await _repository.GetByIdAsync(id);
         if (patient == null)
             throw new KeyNotFoundException($"Patient with ID {id} not found.");
-
-        patient.FirstName = dto.FirstName;
-        patient.LastName = dto.LastName;
-        patient.MiddleName = dto.MiddleName;
-        patient.DateOfBirth = dto.DateOfBirth;
-        patient.IsLinkedToAccount = dto.IsLinkedToAccount;
-        patient.AccountId = dto.AccountId;
-
+        
+        _mapper.Map(dto, patient);
         await _repository.UpdateAsync(patient);
     }
 
