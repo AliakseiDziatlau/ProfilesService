@@ -1,7 +1,7 @@
 using System.Data;
+using MediatR;
 using Microsoft.Data.SqlClient;
 using ProfilesService.Application.Interfaces;
-using ProfilesService.Application.Services;
 using ProfilesService.DataAccess.Interfaces;
 using ProfilesService.DataAccess.Repositories;
 
@@ -20,9 +20,7 @@ builder.Services.AddTransient<IDbConnection>(sp => new SqlConnection(connectionS
 
 //DI container configuration
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<IDoctorService, DoctorService>();
-builder.Services.AddScoped<IReceptionistService, ReceptionistService>();
-builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IReceptionistRepository, ReceptionistRepository>();

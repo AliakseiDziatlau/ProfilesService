@@ -1,5 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProfilesService.Application.Commands.PatientCommands;
+using ProfilesService.Application.Handlers.PatientHandlers;
 using ProfilesService.Application.Interfaces;
+using ProfilesService.Application.Queries.PatientQueries;
 using ProfilesService.Presentation.DTOs;
 
 namespace ProfilesService.Presentation.Controllers;
@@ -8,45 +12,49 @@ namespace ProfilesService.Presentation.Controllers;
 [Route("api/[controller]")]
 public class PatientController : ControllerBase
 {
-    private readonly IPatientService _service;
+    private readonly IMediator _mediator;
 
-    public PatientController(IPatientService service)
+    public PatientController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPatientById(int id)
     {
-        var patient = await _service.GetPatientByIdAsync(id);
+        var query = new GetPatientByIdQuery { Id = id };
+        var patient = await _mediator.Send(query);
         return Ok(patient);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllPatients()
     {
-        var patients = await _service.GetAllPatientsAsync();
+        var query = new GetAllPatientsQuery();
+        var patients = await _mediator.Send(query);
         return Ok(patients);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePatient([FromBody] CreatePatientDto dto)
+    public async Task<IActionResult> CreatePatient([FromBody] CreatePatientCommand command)
     {
-        await _service.CreatePatientAsync(dto);
+        await _mediator.Send(command);
         return StatusCode(201);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePatient(int id, [FromBody] CreatePatientDto dto)
+    public async Task<IActionResult> UpdatePatient(int id, [FromBody] UpdatePatientCommand command)
     {
-        await _service.UpdatePatientAsync(id, dto);
+        command.Id = id;
+        await _mediator.Send(command);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePatient(int id)
     {
-        await _service.DeletePatientAsync(id);
+        var command = new DeletePatientCommand { Id = id };
+        await _mediator.Send(command);
         return NoContent();
     }
 }

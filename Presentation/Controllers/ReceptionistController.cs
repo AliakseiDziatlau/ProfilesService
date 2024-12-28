@@ -1,5 +1,8 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProfilesService.Application.Commands.ReceptionistCommands;
 using ProfilesService.Application.Interfaces;
+using ProfilesService.Application.Queries.ReceptionistQueries;
 using ProfilesService.Presentation.DTOs;
 
 namespace ProfilesService.Presentation.Controllers;
@@ -8,45 +11,49 @@ namespace ProfilesService.Presentation.Controllers;
 [Route("api/[controller]")]
 public class ReceptionistController : ControllerBase
 {
-    private readonly IReceptionistService _service;
+    private readonly IMediator _mediator;
 
-    public ReceptionistController(IReceptionistService service)
+    public ReceptionistController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetReceptionistById(int id)
     {
-        var receptionist = await _service.GetReceptionistByIdAsync(id);
+        var query = new GetReceptionistByIdQuery { Id = id };
+        var receptionist = await _mediator.Send(query);
         return Ok(receptionist);
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllReceptionists()
     {
-        var receptionists = await _service.GetAllReceptionistsAsync();
+        var query = new GetAllReceptionistsQuery();
+        var receptionists = await _mediator.Send(query);
         return Ok(receptionists);
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateReceptionist([FromBody] CreateReceptionistDto dto)
+    public async Task<IActionResult> CreateReceptionist([FromBody] CreateReceptionistCommand command)
     {
-        await _service.CreateReceptionistAsync(dto);
+        await _mediator.Send(command);
         return StatusCode(201);
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateReceptionist(int id, [FromBody] CreateReceptionistDto dto)
+    public async Task<IActionResult> UpdateReceptionist(int id, [FromBody] UpdateReceptionistCommand command)
     {
-        await _service.UpdateReceptionistAsync(id, dto);
+        command.Id = id;
+        await _mediator.Send(command);
         return NoContent();
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReceptionist(int id)
     {
-        await _service.DeleteReceptionistAsync(id);
+        var command = new DeleteReceptionistCommand { Id = id };
+        await _mediator.Send(command);
         return NoContent();
     }
 }
