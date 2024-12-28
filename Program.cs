@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Data.SqlClient;
 using ProfilesService.DataAccess.Interfaces;
 using ProfilesService.DataAccess.Repositories;
+using ProfilesService.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,7 @@ if (app.Environment.IsDevelopment())
     });
 }   
 
+app.UseMiddleware<AuthorizationMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
