@@ -13,12 +13,13 @@ public class DeleteReceptionistCommandHandler : IRequestHandler<DeleteReceptioni
         _repository = repository;
     }
 
-    public async Task Handle(DeleteReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteReceptionistCommand request, CancellationToken cancellationToken)
     {
         var receptionist = await _repository.GetByIdAsync(request.Id);
         if (receptionist == null)
             throw new KeyNotFoundException($"Receptionist with ID {request.Id} not found.");
 
         await _repository.DeleteAsync(request.Id);
+        return Unit.Value;
     }
 }

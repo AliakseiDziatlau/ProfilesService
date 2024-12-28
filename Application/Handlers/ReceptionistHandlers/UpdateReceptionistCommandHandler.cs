@@ -16,7 +16,7 @@ public class UpdateReceptionistCommandHandler : IRequestHandler<UpdateReceptioni
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateReceptionistCommand request, CancellationToken cancellationToken)
     {
         var receptionist = await _repository.GetByIdAsync(request.Id);
         if (receptionist == null)
@@ -24,5 +24,6 @@ public class UpdateReceptionistCommandHandler : IRequestHandler<UpdateReceptioni
 
         _mapper.Map(request, receptionist);
         await _repository.UpdateAsync(receptionist);
+        return Unit.Value;
     }
 }

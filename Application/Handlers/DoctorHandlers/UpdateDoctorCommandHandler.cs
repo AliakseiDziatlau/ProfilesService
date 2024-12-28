@@ -16,7 +16,7 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
     {
         var doctor = await _repository.GetByIdAsync(request.Id);
         if (doctor == null)
@@ -24,5 +24,6 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
 
         _mapper.Map(request, doctor);
         await _repository.UpdateAsync(doctor);
+        return Unit.Value;
     }
 }

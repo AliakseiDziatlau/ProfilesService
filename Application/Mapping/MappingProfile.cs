@@ -1,4 +1,8 @@
 using AutoMapper;
+using ProfilesService.Application.Commands.DoctorCommands;
+using ProfilesService.Application.Commands.PatientCommands;
+using ProfilesService.Application.Commands.ReceptionistCommands;
+using ProfilesService.Application.Handlers.PatientHandlers;
 using ProfilesService.BusinessLogic.Domain.Entities;
 using ProfilesService.Presentation.DTOs;
 
@@ -8,12 +12,17 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        //DTO to domain
-        CreateMap<CreatePatientDto, Patient>();
-        CreateMap<CreateDoctorDto, Doctor>();
-        CreateMap<CreateReceptionistDto, Receptionist>();
+        //commands to models
+        CreateMap<CreatePatientCommand, Patient>();
+        CreateMap<UpdatePatientCommand, Patient>();
 
-        //domain to DTO
+        CreateMap<CreateDoctorCommand, Doctor>();
+        CreateMap<UpdateDoctorCommand, Doctor>();
+
+        CreateMap<CreateReceptionistCommand, Receptionist>();
+        CreateMap<UpdateReceptionistCommand, Receptionist>();
+
+        //models to DTOs for answers
         CreateMap<Patient, PatientResponseDto>();
         CreateMap<Doctor, DoctorResponseDto>();
         CreateMap<Receptionist, ReceptionistResponseDto>();

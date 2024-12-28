@@ -1,7 +1,6 @@
 using System.Data;
 using MediatR;
 using Microsoft.Data.SqlClient;
-using ProfilesService.Application.Interfaces;
 using ProfilesService.DataAccess.Interfaces;
 using ProfilesService.DataAccess.Repositories;
 
@@ -25,6 +24,11 @@ builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 var app = builder.Build();

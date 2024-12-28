@@ -17,9 +17,10 @@ public class CreateReceptionistCommandHandler : IRequestHandler<CreateReceptioni
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateReceptionistCommand request, CancellationToken cancellationToken)
     {
         var receptionist = _mapper.Map<Receptionist>(request);
         await _repository.CreateAsync(receptionist);
+        return Unit.Value;
     }
 }

@@ -17,9 +17,10 @@ public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
     {
         var doctor = _mapper.Map<Doctor>(request);
         await _repository.CreateAsync(doctor);
+        return Unit.Value;
     }
 }

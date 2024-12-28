@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.PatientCommands;
 using ProfilesService.Application.Handlers.PatientHandlers;
-using ProfilesService.Application.Interfaces;
 using ProfilesService.Application.Queries.PatientQueries;
 using ProfilesService.Presentation.DTOs;
 

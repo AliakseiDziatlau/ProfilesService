@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.ReceptionistCommands;
-using ProfilesService.Application.Interfaces;
 using ProfilesService.Application.Queries.ReceptionistQueries;
 using ProfilesService.Presentation.DTOs;
 

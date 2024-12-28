@@ -13,12 +13,13 @@ public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand>
         _repository = repository;
     }
 
-    public async Task Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
     {
         var doctor = await _repository.GetByIdAsync(request.Id);
         if (doctor == null)
             throw new KeyNotFoundException($"Doctor with ID {request.Id} not found.");
 
         await _repository.DeleteAsync(request.Id);
+        return Unit.Value;
     }
 }
