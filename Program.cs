@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using ProfilesService.DataAccess.Interfaces;
 using ProfilesService.DataAccess.Repositories;
 using ProfilesService.Presentation.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,13 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
-   
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration) 
+    .WriteTo.Console()                            
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 //DB configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -44,6 +51,7 @@ if (app.Environment.IsDevelopment())
     });
 }   
 
+app.UseSerilogRequestLogging();
 app.UseMiddleware<AuthorizationMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
