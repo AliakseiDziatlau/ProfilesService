@@ -1,6 +1,8 @@
-namespace ProfilesService.Presentation.DTOs;
+using MediatR;
 
-public class CreateReceptionistDto
+namespace ProfilesService.Application.Commands.ReceptionistCommands;
+
+public class CreateReceptionistCommand : IRequest
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

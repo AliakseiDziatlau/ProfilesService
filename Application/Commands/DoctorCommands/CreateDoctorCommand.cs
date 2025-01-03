@@ -1,6 +1,8 @@
-namespace ProfilesService.Presentation.DTOs;
+using MediatR;
 
-public class CreateDoctorDto
+namespace ProfilesService.Application.Commands.DoctorCommands;
+
+public class CreateDoctorCommand : IRequest
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
