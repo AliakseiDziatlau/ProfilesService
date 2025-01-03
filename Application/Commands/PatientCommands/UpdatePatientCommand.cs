@@ -1,6 +1,8 @@
-namespace ProfilesService.BusinessLogic.Domain.Entities;
+using MediatR;
 
-public class Patient
+namespace ProfilesService.Application.Commands.PatientCommands;
+
+public class UpdatePatientCommand : IRequest
 {
     public int Id { get; set; }
     public string FirstName { get; set; }

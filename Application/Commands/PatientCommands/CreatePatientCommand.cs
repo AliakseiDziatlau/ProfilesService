@@ -1,8 +1,9 @@
-namespace ProfilesService.BusinessLogic.Domain.Entities;
+using MediatR;
 
-public class Patient
+namespace ProfilesService.Application.Handlers.PatientHandlers;
+
+public class CreatePatientCommand : IRequest
 {
-    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }

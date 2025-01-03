@@ -1,12 +1,13 @@
-namespace ProfilesService.BusinessLogic.Domain.Entities;
+using MediatR;
 
-public class Patient
+namespace ProfilesService.Application.Commands.ReceptionistCommands;
+
+public class UpdateReceptionistCommand : IRequest
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }
-    public DateTime DateOfBirth { get; set; }
-    public bool IsLinkedToAccount { get; set; }
     public int? AccountId { get; set; }
+    public string OfficeId { get; set; }
 }

@@ -1,8 +1,9 @@
-namespace ProfilesService.BusinessLogic.Domain.Entities;
+using MediatR;
 
-public class Receptionist
+namespace ProfilesService.Application.Commands.ReceptionistCommands;
+
+public class CreateReceptionistCommand : IRequest
 {
-    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }

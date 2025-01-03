@@ -1,6 +1,6 @@
-namespace ProfilesService.BusinessLogic.Domain.Entities;
+namespace ProfilesService.Presentation.DTOs;
 
-public class Patient
+public class PatientResponseDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
