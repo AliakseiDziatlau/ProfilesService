@@ -1,11 +1,8 @@
 namespace ProfilesService.BusinessLogic.Domain.Entities;
 
-public class Doctor
+public class Doctor : BaseProfile
 {
     public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string MiddleName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public int? AccountId { get; set; }
     public int SpecializationId { get; set; }
