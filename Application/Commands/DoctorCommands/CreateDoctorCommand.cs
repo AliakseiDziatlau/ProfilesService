@@ -1,12 +1,10 @@
 using MediatR;
+using ProfilesService.BusinessLogic.Domain.Entities;
 
 namespace ProfilesService.Application.Commands.DoctorCommands;
 
-public class CreateDoctorCommand : IRequest
+public class CreateDoctorCommand : BaseProfile, IRequest
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string MiddleName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public int? AccountId { get; set; }
     public int SpecializationId { get; set; }
