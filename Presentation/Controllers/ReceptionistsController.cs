@@ -8,11 +8,11 @@ namespace ProfilesService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReceptionistController : ControllerBase
+public class ReceptionistsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public ReceptionistController(IMediator mediator)
+    public ReceptionistsController(IMediator mediator)
     {
         _mediator = mediator;
     }

@@ -9,11 +9,11 @@ namespace ProfilesService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DoctorController : ControllerBase
+public class DoctorsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public DoctorController(IMediator mediator)
+    public DoctorsController(IMediator mediator)
     {
         _mediator = mediator;
     }
