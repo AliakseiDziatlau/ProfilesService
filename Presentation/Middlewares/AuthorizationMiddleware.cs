@@ -28,7 +28,7 @@ public class AuthorizationMiddleware
         var authServerUrl = _configuration["PathToAuthentificationService"];
         var client = _httpClientFactory.CreateClient();
         
-        var response = await client.PostAsJsonAsync($"{authServerUrl}/api/auth/authorize", new { AccessToken = token });
+        var response = await client.PostAsJsonAsync($"{authServerUrl}/api/auths/authorize", new { AccessToken = token });
         
         if (!response.IsSuccessStatusCode)
         {
