@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ProfilesService.BusinessLogic.Domain.Entities;
 
 public abstract class BaseProfile

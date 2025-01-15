@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.DoctorCommands;
 using ProfilesService.Application.Queries.DoctorQueries;
-using ProfilesService.Presentation.DTOs;
 
 namespace ProfilesService.Presentation.Controllers;
 
@@ -23,7 +22,7 @@ public class DoctorsController : ControllerBase
     {
         var query = new GetDoctorByIdQuery { Id = id };
         var doctor = await _mediator.Send(query);
-        return Ok(doctor);
+        return (doctor != null)?Ok(doctor):NotFound(new { Message = "Doctor not found" });
     }
     
     [HttpGet]
@@ -31,29 +30,29 @@ public class DoctorsController : ControllerBase
     {
         var query = new GetAllDoctorsQuery();
         var doctors = await _mediator.Send(query);
-        return Ok(doctors);
+        return (doctors != null && doctors.Any())?Ok(doctors) : NotFound(new { Message = "No doctors found" });
     }
     
     [HttpPost]
     public async Task<IActionResult> CreateDoctor([FromBody] CreateDoctorCommand command)
     {
-        await _mediator.Send(command);
-        return StatusCode(201);
+        var result = await _mediator.Send(command);
+        return (result)?StatusCode(201):BadRequest(new { Message = "Doctor already exists" });
     }
     
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateDoctor(int id, [FromBody] UpdateDoctorCommand command)
     {
         command.Id = id;
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result)?NoContent():NotFound(new { Message = $"Doctor with ID {id} not found." });;
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDoctor(int id)
     {
         var command = new DeleteDoctorCommand { Id = id };
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result)?NoContent():NotFound(new { Message = $"Doctor with ID {id} not found." });
     }
 }

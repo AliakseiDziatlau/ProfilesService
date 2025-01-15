@@ -22,7 +22,7 @@ public class ReceptionistsController : ControllerBase
     {
         var query = new GetReceptionistByIdQuery { Id = id };
         var receptionist = await _mediator.Send(query);
-        return Ok(receptionist);
+        return (receptionist != null) ? Ok(receptionist) : NotFound();
     }
     
     [HttpGet]
@@ -30,29 +30,29 @@ public class ReceptionistsController : ControllerBase
     {
         var query = new GetAllReceptionistsQuery();
         var receptionists = await _mediator.Send(query);
-        return Ok(receptionists);
+        return (receptionists != null && receptionists.Any()) ? Ok(receptionists) : NotFound();
     }
     
     [HttpPost]
     public async Task<IActionResult> CreateReceptionist([FromBody] CreateReceptionistCommand command)
     {
-        await _mediator.Send(command);
-        return StatusCode(201);
+        var result = await _mediator.Send(command);
+        return (result) ? StatusCode(201) : BadRequest();
     }
     
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateReceptionist(int id, [FromBody] UpdateReceptionistCommand command)
     {
         command.Id = id;
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result) ? NoContent() : NotFound();
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReceptionist(int id)
     {
         var command = new DeleteReceptionistCommand { Id = id };
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result) ? NoContent() : NotFound();
     }
 }

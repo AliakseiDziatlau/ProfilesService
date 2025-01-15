@@ -4,7 +4,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.PatientHandlers;
 
-public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand>
+public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand, bool>
 {
     private readonly IPatientRepository _repository;
 
@@ -13,13 +13,13 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand>
         _repository = repository;
     }
 
-    public async Task<Unit> Handle(DeletePatientCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeletePatientCommand request, CancellationToken cancellationToken)
     {
         var patient = await _repository.GetByIdAsync(request.Id);
         if (patient == null)
-            throw new KeyNotFoundException($"Patient with ID {request.Id} not found.");
+            return false;
 
         await _repository.DeleteAsync(request.Id);
-        return Unit.Value;
+        return true;
     }
 }

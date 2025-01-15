@@ -5,7 +5,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.DoctorHandlers;
 
-public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
+public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, bool>
 {
     private readonly IDoctorRepository _repository;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
         _logger = logger;
     }
 
-    public async Task<Unit> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Handling UpdateDoctorCommand for Doctor ID: {DoctorId}", request.Id);
 
@@ -26,7 +26,7 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
         if (doctor == null)
         {
             _logger.LogWarning("Doctor with ID: {DoctorId} not found.", request.Id);
-            throw new KeyNotFoundException($"Doctor with ID {request.Id} not found.");
+            return false;
         }
 
         _logger.LogInformation("Doctor with ID: {DoctorId} found. Updating doctor details.", request.Id);
@@ -35,6 +35,6 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand>
         _logger.LogDebug("Mapped updated details to Doctor: {@Doctor}", doctor);
         await _repository.UpdateAsync(doctor);
         _logger.LogInformation("Successfully updated Doctor with ID: {DoctorId}", doctor.Id);
-        return Unit.Value;
+        return true;
     }
 }

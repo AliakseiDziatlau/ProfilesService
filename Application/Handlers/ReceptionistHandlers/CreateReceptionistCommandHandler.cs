@@ -6,7 +6,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.ReceptionistHandlers;
 
-public class CreateReceptionistCommandHandler : IRequestHandler<CreateReceptionistCommand>
+public class CreateReceptionistCommandHandler : IRequestHandler<CreateReceptionistCommand, bool>
 {
     private readonly IReceptionistRepository _repository;
     private readonly IMapper _mapper;
@@ -17,10 +17,17 @@ public class CreateReceptionistCommandHandler : IRequestHandler<CreateReceptioni
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(CreateReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(CreateReceptionistCommand request, CancellationToken cancellationToken)
     {
-        var receptionist = _mapper.Map<Receptionist>(request);
-        await _repository.CreateAsync(receptionist);
-        return Unit.Value;
+        try
+        {
+            var receptionist = _mapper.Map<Receptionist>(request);
+            await _repository.CreateAsync(receptionist);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 }

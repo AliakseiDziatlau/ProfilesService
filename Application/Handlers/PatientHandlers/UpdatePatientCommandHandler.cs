@@ -5,7 +5,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.PatientHandlers;
 
-public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand>
+public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, bool>
 {
     private readonly IPatientRepository _repository;
     private readonly IMapper _mapper;
@@ -16,14 +16,14 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand>
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
     {
         var patient = await _repository.GetByIdAsync(request.Id);
         if (patient == null)
-            throw new KeyNotFoundException($"Patient with ID {request.Id} not found.");
+            return false;
 
         _mapper.Map(request, patient);
         await _repository.UpdateAsync(patient);
-        return Unit.Value;
+        return true;
     }
 }

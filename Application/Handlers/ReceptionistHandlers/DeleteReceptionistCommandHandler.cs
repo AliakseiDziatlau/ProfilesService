@@ -4,7 +4,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.ReceptionistHandlers;
 
-public class DeleteReceptionistCommandHandler : IRequestHandler<DeleteReceptionistCommand>
+public class DeleteReceptionistCommandHandler : IRequestHandler<DeleteReceptionistCommand, bool>
 {
     private readonly IReceptionistRepository _repository;
 
@@ -13,13 +13,13 @@ public class DeleteReceptionistCommandHandler : IRequestHandler<DeleteReceptioni
         _repository = repository;
     }
 
-    public async Task<Unit> Handle(DeleteReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteReceptionistCommand request, CancellationToken cancellationToken)
     {
         var receptionist = await _repository.GetByIdAsync(request.Id);
         if (receptionist == null)
-            throw new KeyNotFoundException($"Receptionist with ID {request.Id} not found.");
+            return false;
 
         await _repository.DeleteAsync(request.Id);
-        return Unit.Value;
+        return true;
     }
 }

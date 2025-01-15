@@ -3,7 +3,7 @@ using ProfilesService.BusinessLogic.Domain.Entities;
 
 namespace ProfilesService.Application.Commands.DoctorCommands;
 
-public class UpdateDoctorCommand : BaseProfile, IRequest
+public class UpdateDoctorCommand : BaseProfile, IRequest<bool>
 {
     public int Id { get; set; }
     public DateTime DateOfBirth { get; set; }

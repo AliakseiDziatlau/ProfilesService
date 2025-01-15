@@ -3,7 +3,7 @@ using ProfilesService.BusinessLogic.Domain.Entities;
 
 namespace ProfilesService.Application.Commands.ReceptionistCommands;
 
-public class UpdateReceptionistCommand : BaseProfile, IRequest
+public class UpdateReceptionistCommand : BaseProfile, IRequest<bool>
 {
     public int Id { get; set; }
     public int? AccountId { get; set; }

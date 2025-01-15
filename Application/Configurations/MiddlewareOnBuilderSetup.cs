@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+
 namespace ProfilesService.Application.Configuration;
 
 public static class MiddlewareOnBuilderSetup
@@ -6,7 +8,10 @@ public static class MiddlewareOnBuilderSetup
     {
         services.AddAuthorization();
         services.AddAuthentication();
-        services.AddControllers();
+        services.AddControllers().AddFluentValidation(config =>
+        {
+            config.RegisterValidatorsFromAssemblyContaining<Program>();
+        });
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
