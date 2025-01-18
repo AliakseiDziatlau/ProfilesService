@@ -19,6 +19,11 @@ public class PatientRepository : IPatientRepository
     {
         return await _dbConnection.QuerySingleOrDefaultAsync<Patient>(SqlQueriesPatient._getById, new { Id = id });
     }
+    
+    public async Task<Patient> GetByEmailAsync(string email)
+    {
+        return await _dbConnection.QuerySingleOrDefaultAsync<Patient>(SqlQueriesPatient._getByEmail, new { Email = email });
+    }
 
     public async Task<IEnumerable<Patient>> GetAllAsync()
     {

@@ -20,6 +20,11 @@ public class DoctorRepository : IDoctorRepository
         return await _dbConnection.QuerySingleOrDefaultAsync<Doctor>(SqlQueriesDoctor._getById, new { Id = id });
     }
 
+    public async Task<Doctor> GetByEmailAsync(string email)
+    {
+        return await _dbConnection.QuerySingleOrDefaultAsync<Doctor>(SqlQueriesDoctor._getByEmail, new { Email = email });
+    }
+
     public async Task<IEnumerable<Doctor>> GetAllAsync()
     {
         return await _dbConnection.QueryAsync<Doctor>(SqlQueriesDoctor._getAll);

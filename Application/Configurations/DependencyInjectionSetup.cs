@@ -1,4 +1,5 @@
 using MediatR;
+using ProfilesService.Application.Handlers.ReceptionistHandlers;
 using ProfilesService.DataAccess.Interfaces;
 using ProfilesService.DataAccess.Repositories;
 
@@ -10,6 +11,7 @@ public static class DependencyInjectionSetup
     {
         services.AddAutoMapper(typeof(Program));
         services.AddMediatR(typeof(Program));
+        services.AddMediatR(typeof(UpdateReceptionistPhoneNumberHandler).Assembly);
         services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IReceptionistRepository, ReceptionistRepository>();

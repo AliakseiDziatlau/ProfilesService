@@ -1,7 +1,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace ProfilesService.Application.Configuration;
+namespace ProfilesService.Application.Configurations;
 
 public static class DatabaseSetup
 {

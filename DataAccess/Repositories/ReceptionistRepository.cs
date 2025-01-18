@@ -19,6 +19,11 @@ public class ReceptionistRepository : IReceptionistRepository
     {
         return await _dbConnection.QuerySingleOrDefaultAsync<Receptionist>(SqlQueriesReceptionist._getById, new { Id = id });
     }
+    
+    public async Task<Receptionist> GetByEmailAsync(string email)
+    {
+        return await _dbConnection.QuerySingleOrDefaultAsync<Receptionist>(SqlQueriesReceptionist._getByEmail, new { Email = email });
+    }
 
     public async Task<IEnumerable<Receptionist>> GetAllAsync()
     {
