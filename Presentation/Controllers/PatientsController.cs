@@ -9,11 +9,11 @@ namespace ProfilesService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PatientController : ControllerBase
+public class PatientsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public PatientController(IMediator mediator)
+    public PatientsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -23,7 +23,7 @@ public class PatientController : ControllerBase
     {
         var query = new GetPatientByIdQuery { Id = id };
         var patient = await _mediator.Send(query);
-        return Ok(patient);
+        return (patient != null) ? Ok(patient) : NotFound();
     }
 
     [HttpGet]
@@ -31,29 +31,29 @@ public class PatientController : ControllerBase
     {
         var query = new GetAllPatientsQuery();
         var patients = await _mediator.Send(query);
-        return Ok(patients);
+        return (patients != null && patients.Any()) ? Ok(patients) : NotFound();
     }
 
     [HttpPost]
     public async Task<IActionResult> CreatePatient([FromBody] CreatePatientCommand command)
     {
-        await _mediator.Send(command);
-        return StatusCode(201);
+        var result = await _mediator.Send(command);
+        return (result)?StatusCode(201):BadRequest();
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePatient(int id, [FromBody] UpdatePatientCommand command)
     {
         command.Id = id;
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result)?NoContent():NotFound();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePatient(int id)
     {
         var command = new DeletePatientCommand { Id = id };
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return (result)?NoContent():NotFound();
     }
 }

@@ -1,12 +1,10 @@
 using MediatR;
+using ProfilesService.BusinessLogic.Domain.Entities;
 
 namespace ProfilesService.Application.Commands.ReceptionistCommands;
 
-public class CreateReceptionistCommand : IRequest
+public class CreateReceptionistCommand : BaseProfile, IRequest<bool>
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string MiddleName { get; set; }
     public int? AccountId { get; set; }
     public string OfficeId { get; set; }
 }

@@ -5,7 +5,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.ReceptionistHandlers;
 
-public class UpdateReceptionistCommandHandler : IRequestHandler<UpdateReceptionistCommand>
+public class UpdateReceptionistCommandHandler : IRequestHandler<UpdateReceptionistCommand, bool>
 {
     private readonly IReceptionistRepository _repository;
     private readonly IMapper _mapper;
@@ -16,14 +16,14 @@ public class UpdateReceptionistCommandHandler : IRequestHandler<UpdateReceptioni
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateReceptionistCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UpdateReceptionistCommand request, CancellationToken cancellationToken)
     {
         var receptionist = await _repository.GetByIdAsync(request.Id);
         if (receptionist == null)
-            throw new KeyNotFoundException($"Receptionist with ID {request.Id} not found.");
+            return false;
 
         _mapper.Map(request, receptionist);
         await _repository.UpdateAsync(receptionist);
-        return Unit.Value;
+        return true;
     }
 }

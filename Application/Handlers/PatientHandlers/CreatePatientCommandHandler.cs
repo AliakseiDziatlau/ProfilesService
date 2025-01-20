@@ -5,7 +5,7 @@ using ProfilesService.DataAccess.Interfaces;
 
 namespace ProfilesService.Application.Handlers.PatientHandlers;
 
-public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand>
+public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, bool>
 {
     private readonly IPatientRepository _repository;
     private readonly IMapper _mapper;
@@ -16,10 +16,20 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand>
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
     {
-        var patient = _mapper.Map<Patient>(request);
-        await _repository.CreateAsync(patient);
-        return Unit.Value;
+        try
+        {
+            var patient = _mapper.Map<Patient>(request);
+            await _repository.CreateAsync(patient);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false; 
+        }
+        // var patient = _mapper.Map<Patient>(request);
+        // await _repository.CreateAsync(patient);
+        // return Unit.Value;
     }
 }
