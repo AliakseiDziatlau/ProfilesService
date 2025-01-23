@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.DoctorCommands;
 using ProfilesService.Application.Queries.DoctorQueries;
+using ProfilesService.Presentation.Attributes;
 
 namespace ProfilesService.Presentation.Controllers;
 
@@ -34,6 +35,7 @@ public class DoctorsController : ControllerBase
     }
     
     [HttpPost]
+    [OnlyForReceptionist]
     public async Task<IActionResult> CreateDoctor([FromBody] CreateDoctorCommand command)
     {
         var result = await _mediator.Send(command);
@@ -41,6 +43,7 @@ public class DoctorsController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> UpdateDoctor(int id, [FromBody] UpdateDoctorCommand command)
     {
         command.Id = id;
@@ -49,6 +52,7 @@ public class DoctorsController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> DeleteDoctor(int id)
     {
         var command = new DeleteDoctorCommand { Id = id };

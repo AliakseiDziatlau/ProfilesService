@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.ReceptionistCommands;
 using ProfilesService.Application.Queries.ReceptionistQueries;
+using ProfilesService.Presentation.Attributes;
 using ProfilesService.Presentation.DTOs;
 
 namespace ProfilesService.Presentation.Controllers;
@@ -34,6 +35,7 @@ public class ReceptionistsController : ControllerBase
     }
     
     [HttpPost]
+    [OnlyForReceptionist]
     public async Task<IActionResult> CreateReceptionist([FromBody] CreateReceptionistCommand command)
     {
         var result = await _mediator.Send(command);
@@ -41,6 +43,7 @@ public class ReceptionistsController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> UpdateReceptionist(int id, [FromBody] UpdateReceptionistCommand command)
     {
         command.Id = id;
@@ -49,6 +52,7 @@ public class ReceptionistsController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> DeleteReceptionist(int id)
     {
         var command = new DeleteReceptionistCommand { Id = id };

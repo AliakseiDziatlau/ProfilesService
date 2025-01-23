@@ -11,9 +11,19 @@ builder.Services.ConfigureServices();
 builder.Services.AddMiddlearesAndSwagger();
 builder.Services.AddEventSubscriber(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   
+            .AllowAnyMethod()    
+            .AllowAnyHeader();  
+    });
+});
+
 var app = builder.Build();
 app.AddSwagger();
+app.UseCors("AllowAll");
 app.AddMiddlewares();
 app.AddListeners(); 
-
 app.Run(); 

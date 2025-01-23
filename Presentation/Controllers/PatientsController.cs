@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Application.Commands.PatientCommands;
 using ProfilesService.Application.Handlers.PatientHandlers;
 using ProfilesService.Application.Queries.PatientQueries;
+using ProfilesService.Presentation.Attributes;
 using ProfilesService.Presentation.DTOs;
 
 namespace ProfilesService.Presentation.Controllers;
@@ -35,6 +36,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPost]
+    [OnlyForReceptionist]
     public async Task<IActionResult> CreatePatient([FromBody] CreatePatientCommand command)
     {
         var result = await _mediator.Send(command);
@@ -42,6 +44,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> UpdatePatient(int id, [FromBody] UpdatePatientCommand command)
     {
         command.Id = id;
@@ -50,6 +53,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [OnlyForReceptionist]
     public async Task<IActionResult> DeletePatient(int id)
     {
         var command = new DeletePatientCommand { Id = id };
